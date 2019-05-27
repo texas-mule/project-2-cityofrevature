@@ -1,0 +1,139 @@
+#%RAML 1.0
+title: police_station
+version: v1
+baseUri: http://police.revature.com
+/police:
+  /worker:
+    description: This is used to get all workers details
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "workerid":"P1",
+                "workerusername":"djson",
+                "fanme":"Dan",
+                "lname":"Json",
+                "email":"djson@gmail.com",
+                "position":"Police Officer",
+                "password":"password",
+                "employment":"employed",
+                "pnumber":1234567890,
+                "ssn":123456789,
+                "age":24
+                }
+    post:
+      body:
+        application/json:
+          example: |
+            {
+            "workerid":"P1",
+            "workerusername":"djson",
+            "fanme":"Dan",
+            "lname":"Json",
+            "email":"djson@gmail.com",
+            "position":"Police Officer",
+            "password":"password",
+            "employment":"employed",
+            "pnumber":1234567890,
+            "ssn":123456789,
+            "age":24
+            }
+      responses:
+        201:
+          body:
+            application/json:
+              example: |
+                {
+                "message": "Worker inserted"
+                }
+    /{id}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                  "workerusername":"djson",
+                  "fanme":"Dan",
+                  "lname":"Json",
+                  "email":"djson@gmail.com",
+                  "position":"Police Officer",
+                  "password":"password",
+                  "employment":"employed",
+                  "pnumber":1234567890,
+                  "ssn":123456789,
+                  "age":24
+                  }
+      delete:
+        description: This method will delete an entry given their id
+    /{username}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                  "workerid":"P1",
+                  "fanme":"Dan",
+                  "lname":"Json",
+                  "email":"djson@gmail.com",
+                  "position":"Police Officer",
+                  "password":"password",
+                  "employment":"employed",
+                  "pnumber":1234567890,
+                  "ssn":123456789,
+                  "age":24
+                  }
+      delete:
+        description: This method will delete an entry given their username
+  /criminal:
+    description: This is used to get all criminals details
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "criminalid":"C1",
+                "cfname":"Joe",
+                "clname":"Mitchel",
+                "conviction":"convicted"
+                }
+    post:
+      body:
+        application/json:
+          example: |
+            {
+            "criminalid":"C1",
+            "cfname":"Joe",
+            "clname":"Mitchel",
+            "conviction":"convicted"
+            }
+      responses:
+        201:
+          body:
+            application/json:
+              example: |
+                {
+                "message": "Criminal inserted"
+                }
+    /{id}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                  "cfname":"Joe",
+                  "clname":"Mitchell",
+                  "convictioin":"released"
+                  }
+      delete:
+        description: This method will delete an entry given their id
