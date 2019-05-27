@@ -193,12 +193,26 @@ baseUri: http://police.revature.com
             body:
               application/json:
                 example: |
-                  {
-                  "criminalid":"C1",
-                  "cfname":"Joe",
-                  "clname":"Mitchel",
-                  "conviction":"convicted"
-                  }
+                  [
+                      {
+                          "id": "0034P00002SkogHQAR",
+                          "first": "Mort",
+                          "last": "Deadman",
+                          "email": "cancerpatient@thedead.com",
+                          "phone": "(777) 123 - 8977",
+                          "birthdate": "1994-11-08T00:00:00.000+0000",
+                          "accountid": "0014P000025vEztQAE"
+                      },
+                      {
+                          "id": "0034P00002SkogMQAR",
+                          "first": "Zed",
+                          "last": "PimplePopper",
+                          "email": "hypochondriac@short.com",
+                          "phone": "(811) 456 - 7771",
+                          "birthdate": "1998-11-08T00:00:00.000+0000",
+                          "accountid": "0014P000025vEztQAE"
+                      }
+                  ]
       post:
         body:
           application/json:
