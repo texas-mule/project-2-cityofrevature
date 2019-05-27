@@ -218,21 +218,27 @@ baseUri: http://police.revature.com
           application/json:
             example: |
               {
-                  "id": "0034P00002SkojfQAB",
-                  "first": "Johnny",
-                  "last": "Tongue-in-Socket",
-                  "email": "electrocution@wallsocket.com",
-                  "phone": "(765) 122 - 4733",
-                  "birthdate": "1994-08-29T00:00:00.000+0000",
-                  "accountid": "0014P000025vEztQAE"
+                "id":"",
+                "first":"Johnny",
+                "last":"Tongue-in-Socket",
+                "email":"electrocution@wallsocket.com",
+                "phone":"(765) 122 - 4733",
+                "birthdate":"1994-08-29",
+                "accountid":"0014P000025vEztQAE"
               }
         responses:
           201:
             body:
               application/json:
-                example: |
+                example: |             
                   {
-                  "message": "Criminal inserted"
+                    "id": "0034P00002SkojfQAB",
+                    "first": "Johnny",
+                    "last": "Tongue-in-Socket",
+                    "email": "electrocution@wallsocket.com",
+                    "phone": "(765) 122 - 4733",
+                    "birthdate": "1994-08-29T00:00:00.000+0000",
+                    "accountid": "0014P000025vEztQAE"
                   }
       /{id}:
         get:
