@@ -128,35 +128,38 @@ baseUri: http://police.revature.com
             body:
               application/json:
                 example: |
-                  {
-                  "workerid":"P1",
-                  "workerusername":"djson",
-                  "fanme":"Dan",
-                  "lname":"Json",
-                  "email":"djson@gmail.com",
-                  "position":"Police Officer",
-                  "password":"password",
-                  "employment":"employed",
-                  "pnumber":1234567890,
-                  "ssn":123456789,
-                  "age":24
-                  }
+                  [
+                      {
+                          "id": "0034P00002Skoe1QAB",
+                          "first": "Robin",
+                          "last": "James",
+                          "email": "jerk@uncoolpeople.com",
+                          "phone": "(385) 888 - 9000",
+                          "birthdate": "1990-01-19T00:00:00.000+0000",
+                          "accountid": "0014P000025vEy2QAE"
+                      },
+                      {
+                          "id": "0034P00002SlTRdQAN",
+                          "first": "Doug",
+                          "last": "Krabbe",
+                          "email": "somebody@earthlink.com",
+                          "phone": "(100) 744 - 1234",
+                          "birthdate": "1997-12-05T00:00:00.000+0000",
+                          "accountid": "0014P000025vEy2QAE"
+                      }
+                  ]
       post:
         body:
           application/json:
             example: |
               {
-              "workerid":"P1",
-              "workerusername":"djson",
-              "fanme":"Dan",
-              "lname":"Json",
-              "email":"djson@gmail.com",
-              "position":"Police Officer",
-              "password":"password",
-              "employment":"employed",
-              "pnumber":1234567890,
-              "ssn":123456789,
-              "age":24
+              "id": "",
+              "first": "Doug",
+              "last": "Krabbe",
+              "email": "somebody@earthlink.com",
+              "phone": "(100) 744 - 1234",
+              "birthdate": "1997-12-05",
+              "accountid": "0014P000025vEy2QAE"
               }
         responses:
           201:
@@ -164,7 +167,13 @@ baseUri: http://police.revature.com
               application/json:
                 example: |
                   {
-                  "message": "Worker inserted"
+                      "id": "0034P00002SlTRdQAN",
+                      "first": "Doug",
+                      "last": "Krabbe",
+                      "email": "somebody@earthlink.com",
+                      "phone": "(100) 744 - 1234",
+                      "birthdate": "1997-12-05T00:00:00.000+0000",
+                      "accountid": "0014P000025vEy2QAE"
                   }
       /{id}:
         get:
@@ -172,18 +181,15 @@ baseUri: http://police.revature.com
             200:
               body:
                 application/json:
-                  example: |
+                  example: |    
                     {
-                    "workerusername":"djson",
-                    "fanme":"Dan",
-                    "lname":"Json",
-                    "email":"djson@gmail.com",
-                    "position":"Police Officer",
-                    "password":"password",
-                    "employment":"employed",
-                    "pnumber":1234567890,
-                    "ssn":123456789,
-                    "age":24
+                        "id": "0034P00002SlTRdQAN",
+                        "first": "Doug",
+                        "last": "Krabbe",
+                        "email": "somebody@earthlink.com",
+                        "phone": "(100) 744 - 1234",
+                        "birthdate": "1997-12-05T00:00:00.000+0000",
+                        "accountid": "0014P000025vEy2QAE"
                     }
         delete:
           description: This method will delete an entry given their id
@@ -250,9 +256,13 @@ baseUri: http://police.revature.com
                 application/json:
                   example: |
                     {
-                    "cfname":"Joe",
-                    "clname":"Mitchell",
-                    "convictioin":"released"
+                        "id": "0034P00002SkogMQAR",
+                        "first": "Zed",
+                        "last": "PimplePopper",
+                        "email": "hypochondriac@short.com",
+                        "phone": "(811) 456 - 7771",
+                        "birthdate": "1998-11-08T00:00:00.000+0000",
+                        "accountid": "0014P000025vEztQAE"
                     }
         delete:
           description: This method will delete an entry given their id
