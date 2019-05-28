@@ -25,10 +25,10 @@ protocols:
           example:
             strict: true
             value:
+              company: Not Assigned
               name: Stephen Weinhart
-              skill: electrical
               phone: 123-456-7890
-              email: steve@test.net
+              skill: electrical
           type: object
 /clients:
   get:
@@ -70,25 +70,11 @@ protocols:
             strict: true
             value:
               name: Stephen Weinhart
-              company: Unemployed
-              skill: electrical
-              ss: 123-45-6789
-              phone: 123-456-7890
-              email: steve@test.net
-          type: object
-      "400":
-        description: Invalid ID Parameter
-        body:
-          description: Personnel Details
-          example:
-            strict: true
-            value:
-              skill: electrical
-              company: Unemployed
               ss: 123-45-6789
               email: steve@test.net
-              name: Stephen Weinhart
+              company: Unemployed
               phone: 123-456-7890
+              skill: electrical
           type: object
       "401":
         description: Bad username or password
@@ -96,6 +82,13 @@ protocols:
           text/plain:
             default: Invalid Username or Password
             example: Invalid Username or Password
+            type: string
+      "404":
+        description: Invalid id
+        body:
+          text/plain:
+            description: Personnel Details
+            example: Not Found
             type: string
   uriParameters:
     id:
@@ -144,8 +137,7 @@ protocols:
         body:
           text/plain:
             description: Query Parameter not good
-            default: Query Parameter not good
-            example: Query Parameter not good
+            example: Bad Request
             type: string
 /clients/{name}:
   get:
@@ -163,17 +155,12 @@ protocols:
               phone: 123-456-7890
               email: test@revature.dodge.com
           type: object
-      "400":
-        description: Invalid Id entered
+      "404":
+        description: Client doesn't exist
         body:
-          description: Client by Id
-          example:
-            strict: true
-            value:
-              name: Revature Dodge
-              phone: 123-456-7890
-              email: test@revature.dodge.com
-          type: object
+          text/plain:
+            example: Not Found
+            type: string
   uriParameters:
     name:
       description: ""
@@ -196,17 +183,12 @@ protocols:
               email: steve@test.net
               skill: electrical
           type: object
-      "400":
+      "404":
+        description: Client doesn't exist
         body:
-          description: client employee list
-          example:
-            strict: true
-            value:
-              name: Stephen Weinhart
-              phone: 123-456-7890
-              email: steve@test.net
-              skill: electrical
-          type: object
+          text/plain:
+            example: Not Found
+            type: string
   uriParameters:
     name:
       description: Company Name
@@ -235,16 +217,19 @@ protocols:
           example: Revature has successfully hired Steve Weinhart
           type: string
       "400":
-        description: Invalid Id
+        description: Invalid Client or Employee Id
         body:
-          description: Response String
-          example: Revature has successfully hired Steve Weinhart
-          type: string
+          text/plain:
+            description: Response String
+            example: Invalid Request
+            type: string
       "401":
+        description: Invalid Username/Password
         body:
-          description: Response String
-          example: Revature has successfully hired Steve Weinhart
-          type: string
+          text/plain:
+            description: Response String
+            example: Unauthorized
+            type: string
   uriParameters:
     empId:
       description: Hire an employee by Id
@@ -278,17 +263,18 @@ protocols:
             example: "Revature has successfully released Steve Weinhart "
             type: string
       "400":
+        description: Client name or personnel Id invalid
         body:
           text/plain:
             description: Response String
-            example: "Revature has successfully released Steve Weinhart "
+            example: Bad Request
             type: string
       "401":
         description: Invalid credentials
         body:
           text/plain:
             description: Response String
-            example: "Revature has successfully released Steve Weinhart "
+            example: Unauthorized
             type: string
   uriParameters:
     id:
