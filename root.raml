@@ -17,8 +17,7 @@ baseUri: http://police.revature.com
                   {
                   "workerid":"P1",
                   "workerusername":"djson",
-                  "fanme":"Dan",
-                  "lname":"Json",
+                  "name":"Dan Json",
                   "email":"djson@gmail.com",
                   "position":"Police Officer",
                   "password":"password",
@@ -34,8 +33,7 @@ baseUri: http://police.revature.com
               {
               "workerid":"P1",
               "workerusername":"djson",
-              "fanme":"Dan",
-              "lname":"Json",
+              "name":"Dan Json",
               "email":"djson@gmail.com",
               "position":"Police Officer",
               "password":"password",
@@ -61,8 +59,7 @@ baseUri: http://police.revature.com
                   example: |
                     {
                     "workerusername":"djson",
-                    "fanme":"Dan",
-                    "lname":"Json",
+                    "name":"Dan Json",
                     "email":"djson@gmail.com",
                     "position":"Police Officer",
                     "password":"password",
@@ -83,8 +80,7 @@ baseUri: http://police.revature.com
                 example: |
                   {
                   "criminalid":"C1",
-                  "cfname":"Joe",
-                  "clname":"Mitchel",
+                  "name":"Joe Mitchell",
                   "conviction":"convicted"
                   }
       post:
@@ -93,8 +89,7 @@ baseUri: http://police.revature.com
             example: |
               {
               "criminalid":"C1",
-              "cfname":"Joe",
-              "clname":"Mitchel",
+              "name":"Joe Mitchell",
               "conviction":"convicted"
               }
         responses:
@@ -113,9 +108,8 @@ baseUri: http://police.revature.com
                 application/json:
                   example: |
                     {
-                    "cfname":"Joe",
-                    "clname":"Mitchell",
-                    "convictioin":"released"
+                    "name":"Joe Mitchell",
+                    "conviction":"released"
                     }
         delete:
           description: This method will delete an entry given their id
