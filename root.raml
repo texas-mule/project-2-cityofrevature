@@ -586,5 +586,34 @@ baseUri: http://police.revature.com
                     "factory": null,
                     "backgroundchecks": null
                   }
+     
         delete:
           description: delete from all datasources by name.
+          
+          /car:
+    /asset:
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "accountId": "0014P000026icIiQAI",
+                "name": "john",
+                "price": null,
+                "Status": "",
+                "Quantity": null,
+                "SerialNumber": ""
+              }
+      get:
+        responses:
+          200:
+            body:
+              example: |
+                {
+                  "accountId": "0014P000026icIiQAI",
+                  "name": "john",
+                  "price": null,
+                  "Status": "",
+                  "Quantity": null,
+                  "SerialNumber": ""
+                }
