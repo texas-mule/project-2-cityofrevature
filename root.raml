@@ -534,3 +534,57 @@ baseUri: http://police.revature.com
           description: Client Id
           example: Example
           type: string
+  /integration:
+    /person:
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "workerusername":"djson",
+                "email":"djson@gmail.com",
+                "position":"Police Officer",
+                "password":"password",
+                "employment":"employed",
+                "pnumber":1234567890,
+                "ssn":123456789,
+                "age":24,
+                "first": "Doug",
+                "last": "Krabbe",
+                "email": "somebody@earthlink.com",
+                "phone": "(100) 744 - 1234",
+                "birthdate": "1997-12-05",
+                "accountid": "0014P000025vEy2QAE",
+                "skill": "software",
+                "company": "Barnes and Noble"
+              }
+        responses:
+          201:
+            body:
+              example: | 
+                {
+                  "message":"inserted"
+                }
+      /{name}:
+        get:
+          responses:
+            200:
+              body:
+                example: |
+                  {
+                    "police":{
+                      "name": "Joe Schmoe",
+                      "id": "P1"
+                    }
+                    "hospital": {
+                      "name": "Joe Schmoe",
+                      "id": "0034P00002SkogHQAR"
+                    }
+                    "employmentagency": {
+                      "name": "Joe Schmoe",
+                    },
+                    "factory": null,
+                    "backgroundchecks": null
+                  }
+        delete:
+          description: delete from all datasources by name.
