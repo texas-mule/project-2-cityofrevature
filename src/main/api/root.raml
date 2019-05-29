@@ -1,0 +1,590 @@
+#%RAML 1.0
+title: police_station
+version: v1
+mediaType:
+  - application/json
+baseUri: http://police.revature.com
+/city:
+  /police:
+    /worker:
+      description: This is used to get all workers details
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                  "workerid":"P1",
+                  "workerusername":"djson",
+                  "name":"Dan Json",
+                  "email":"djson@gmail.com",
+                  "position":"Police Officer",
+                  "password":"password",
+                  "employment":"employed",
+                  "pnumber":1234567890,
+                  "ssn":123456789,
+                  "age":24
+                  }
+      post:
+        body:
+          application/json:
+            example: |
+              {
+              "workerid":"P1",
+              "workerusername":"djson",
+              "name":"Dan Json",
+              "email":"djson@gmail.com",
+              "position":"Police Officer",
+              "password":"password",
+              "employment":"employed",
+              "pnumber":1234567890,
+              "ssn":123456789,
+              "age":24
+              }
+        responses:
+          201:
+            body:
+              application/json:
+                example: |
+                  {
+                  "message": "Worker inserted"
+                  }
+      /{id}:
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                    "workerusername":"djson",
+                    "name":"Dan Json",
+                    "email":"djson@gmail.com",
+                    "position":"Police Officer",
+                    "password":"password",
+                    "employment":"employed",
+                    "pnumber":1234567890,
+                    "ssn":123456789,
+                    "age":24
+                    }
+        delete:
+          description: This method will delete an entry given their id
+    /criminal:
+      description: This is used to get all criminals details
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                  "criminalid":"C1",
+                  "name":"Joe Mitchell",
+                  "conviction":"convicted"
+                  }
+      post:
+        body:
+          application/json:
+            example: |
+              {
+              "criminalid":"C1",
+              "name":"Joe Mitchell",
+              "conviction":"convicted"
+              }
+        responses:
+          201:
+            body:
+              application/json:
+                example: |
+                  {
+                  "message": "Criminal inserted"
+                  }
+      /{id}:
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                    "name":"Joe Mitchell",
+                    "conviction":"released"
+                    }
+        delete:
+          description: This method will delete an entry given their id
+  /hospital:
+    /worker:
+      description: This is used to get all workers details
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                      {
+                          "id": "0034P00002Skoe1QAB",
+                          "first": "Robin",
+                          "last": "James",
+                          "email": "jerk@uncoolpeople.com",
+                          "phone": "(385) 888 - 9000",
+                          "birthdate": "1990-01-19T00:00:00.000+0000",
+                          "accountid": "0014P000025vEy2QAE"
+                      },
+                      {
+                          "id": "0034P00002SlTRdQAN",
+                          "first": "Doug",
+                          "last": "Krabbe",
+                          "email": "somebody@earthlink.com",
+                          "phone": "(100) 744 - 1234",
+                          "birthdate": "1997-12-05T00:00:00.000+0000",
+                          "accountid": "0014P000025vEy2QAE"
+                      }
+                  ]
+      post:
+        body:
+          application/json:
+            example: |
+              {
+              "id": "",
+              "first": "Doug",
+              "last": "Krabbe",
+              "email": "somebody@earthlink.com",
+              "phone": "(100) 744 - 1234",
+              "birthdate": "1997-12-05",
+              "accountid": "0014P000025vEy2QAE"
+              }
+        responses:
+          201:
+            body:
+              application/json:
+                example: |
+                  {
+                      "id": "0034P00002SlTRdQAN",
+                      "first": "Doug",
+                      "last": "Krabbe",
+                      "email": "somebody@earthlink.com",
+                      "phone": "(100) 744 - 1234",
+                      "birthdate": "1997-12-05T00:00:00.000+0000",
+                      "accountid": "0014P000025vEy2QAE"
+                  }
+      /{id}:
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |    
+                    {
+                        "id": "0034P00002SlTRdQAN",
+                        "first": "Doug",
+                        "last": "Krabbe",
+                        "email": "somebody@earthlink.com",
+                        "phone": "(100) 744 - 1234",
+                        "birthdate": "1997-12-05T00:00:00.000+0000",
+                        "accountid": "0014P000025vEy2QAE"
+                    }
+        delete:
+          description: This method will delete an entry given their id
+    /patient:
+      description: This is used to get all patient details
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                      {
+                          "id": "0034P00002SkogHQAR",
+                          "first": "Mort",
+                          "last": "Deadman",
+                          "email": "cancerpatient@thedead.com",
+                          "phone": "(777) 123 - 8977",
+                          "birthdate": "1994-11-08T00:00:00.000+0000",
+                          "accountid": "0014P000025vEztQAE"
+                      },
+                      {
+                          "id": "0034P00002SkogMQAR",
+                          "first": "Zed",
+                          "last": "PimplePopper",
+                          "email": "hypochondriac@short.com",
+                          "phone": "(811) 456 - 7771",
+                          "birthdate": "1998-11-08T00:00:00.000+0000",
+                          "accountid": "0014P000025vEztQAE"
+                      }
+                  ]
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "id":"",
+                "first":"Johnny",
+                "last":"Tongue-in-Socket",
+                "email":"electrocution@wallsocket.com",
+                "phone":"(765) 122 - 4733",
+                "birthdate":"1994-08-29",
+                "accountid":"0014P000025vEztQAE"
+              }
+        responses:
+          201:
+            body:
+              application/json:
+                example: |             
+                  {
+                    "id": "0034P00002SkojfQAB",
+                    "first": "Johnny",
+                    "last": "Tongue-in-Socket",
+                    "email": "electrocution@wallsocket.com",
+                    "phone": "(765) 122 - 4733",
+                    "birthdate": "1994-08-29T00:00:00.000+0000",
+                    "accountid": "0014P000025vEztQAE"
+                  }
+      /{id}:
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                        "id": "0034P00002SkogMQAR",
+                        "first": "Zed",
+                        "last": "PimplePopper",
+                        "email": "hypochondriac@short.com",
+                        "phone": "(811) 456 - 7771",
+                        "birthdate": "1998-11-08T00:00:00.000+0000",
+                        "accountid": "0014P000025vEztQAE"
+                    }
+        delete:
+          description: This method will delete an entry given their id
+  /employmentagency:
+    /available:
+      get:
+        displayName: "null"
+        description: "null"
+        responses:
+          "200":
+            description: Lists personnel available for employment
+            body:
+              example:
+                strict: true
+                value:
+                  company: Not Assigned
+                  name: Stephen Weinhart
+                  phone: 123-456-7890
+                  skill: electrical
+              type: object
+    /clients:
+      get:
+        displayName: "null"
+        description: "null"
+        responses:
+          "200":
+            description: Get companies who are Agency clients
+            body:
+              description: Lists Agency clients
+              example:
+                strict: true
+                value:
+                  name: Revature Dodge
+                  phone: 123-456-7890
+                  email: test@revature.dodge.com
+              type: object
+    /available/{id}:
+      get:
+        displayName: "null"
+        description: "null"
+        queryParameters:
+          username:
+            description: ""
+            default: admin
+            example: admin
+            type: string
+          password:
+            description: ""
+            default: admin
+            example: admin
+            type: string
+        responses:
+          "200":
+            description: List Personnel Details
+            body:
+              description: Personnel Details
+              example:
+                strict: true
+                value:
+                  name: Stephen Weinhart
+                  ss: 123-45-6789
+                  email: steve@test.net
+                  company: Unemployed
+                  phone: 123-456-7890
+                  skill: electrical
+              type: object
+          "401":
+            description: Bad username or password
+            body:
+              text/plain:
+                default: Invalid Username or Password
+                example: Invalid Username or Password
+                type: string
+          "404":
+            description: Invalid id
+            body:
+              text/plain:
+                description: Personnel Details
+                example: Not Found
+                type: string
+      uriParameters:
+        id:
+          description: Employee id
+          example: 1
+          type: number
+          minimum: 1
+          format: int
+    /clients/apply:
+      post:
+        queryParameters:
+          name:
+            description: Company Name
+            example: Revature Dodge
+            type: string
+            minLength: 4
+          phone:
+            description: Company Phone Number
+            example: 123-456-7890
+            type: string
+            minLength: 12
+          email:
+            description: ""
+            example: test@test.com
+            type: string
+          username:
+            description: New Username
+            default: admin
+            example: admin
+            type: string
+          password:
+            description: New Password
+            default: admin
+            example: admin
+            type: string
+        responses:
+          "200":
+            description: New Client added
+            body:
+              text/plain:
+                default: New Client Added
+                example: New Client Added
+                type: string
+          "400":
+            description: Bad Input
+            body:
+              text/plain:
+                description: Query Parameter not good
+                example: Bad Request
+                type: string
+    /clients/{name}:
+      get:
+        displayName: "null"
+        description: "null"
+        responses:
+          "200":
+            description: Get Client By Id
+            body:
+              description: Client by Id
+              example:
+                strict: true
+                value:
+                  name: Revature Dodge
+                  phone: 123-456-7890
+                  email: test@revature.dodge.com
+              type: object
+          "404":
+            description: Client doesn't exist
+            body:
+              text/plain:
+                example: Not Found
+                type: string
+      uriParameters:
+        name:
+          description: ""
+          example: Example
+          type: string
+    /clients/{name}/employees:
+      get:
+        displayName: "null"
+        description: "null"
+        responses:
+          "200":
+            description: Lists employees of client
+            body:
+              description: client employee list
+              example:
+                strict: true
+                value:
+                  name: Stephen Weinhart
+                  phone: 123-456-7890
+                  email: steve@test.net
+                  skill: electrical
+              type: object
+          "404":
+            description: Client doesn't exist
+            body:
+              text/plain:
+                example: Not Found
+                type: string
+      uriParameters:
+        name:
+          description: Company Name
+          example: Example
+          type: string
+    /clients/{name}/hire/{id}:
+      post:
+        displayName: "null"
+        description: "null"
+        queryParameters:
+          username:
+            description: Company Username
+            default: admin
+            example: admin
+            type: string
+          password:
+            description: Company password
+            default: admin
+            example: admin
+            type: string
+        responses:
+          "200":
+            description: Hire Employee
+            body:
+              description: Response String
+              example: Revature has successfully hired Steve Weinhart
+              type: string
+          "400":
+            description: Invalid Client or Employee Id
+            body:
+              text/plain:
+                description: Response String
+                example: Invalid Request
+                type: string
+          "401":
+            description: Invalid Username/Password
+            body:
+              text/plain:
+                description: Response String
+                example: Unauthorized
+                type: string
+      uriParameters:
+        empId:
+          description: Hire an employee by Id
+          example: 1
+          type: number
+          minimum: 1
+          format: int
+        name:
+          description: Client Id
+          example: Example
+          type: string
+    /clients/{name}/release/{id}:
+      post:
+        queryParameters:
+          username:
+            description: ""
+            default: admin
+            example: admin
+            type: string
+          password:
+            description: ""
+            default: admin
+            example: admin
+            type: string
+        responses:
+          "200":
+            description: Release Employee
+            body:
+              text/plain:
+                description: Response String
+                example: "Revature has successfully released Steve Weinhart "
+                type: string
+          "400":
+            description: Client name or personnel Id invalid
+            body:
+              text/plain:
+                description: Response String
+                example: Bad Request
+                type: string
+          "401":
+            description: Invalid credentials
+            body:
+              text/plain:
+                description: Response String
+                example: Unauthorized
+                type: string
+      uriParameters:
+        id:
+          description: Employee Id
+          example: 1
+          type: number
+          minimum: 1
+          format: int
+        name:
+          description: Client Id
+          example: Example
+          type: string
+  /integration:
+    /person:
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "workerusername":"djson",
+                "email":"djson@gmail.com",
+                "position":"Police Officer",
+                "password":"password",
+                "employment":"employed",
+                "pnumber":1234567890,
+                "ssn":123456789,
+                "age":24,
+                "first": "Doug",
+                "last": "Krabbe",
+                "email": "somebody@earthlink.com",
+                "phone": "(100) 744 - 1234",
+                "birthdate": "1997-12-05",
+                "accountid": "0014P000025vEy2QAE",
+                "skill": "software",
+                "company": "Barnes and Noble"
+              }
+        responses:
+          201:
+            body:
+              example: | 
+                {
+                  "message":"inserted"
+                }
+      /{name}:
+        get:
+          responses:
+            200:
+              body:
+                example: |
+                  {
+                    "police":{
+                      "name": "Joe Schmoe",
+                      "id": "P1"
+                    }
+                    "hospital": {
+                      "name": "Joe Schmoe",
+                      "id": "0034P00002SkogHQAR"
+                    }
+                    "employmentagency": {
+                      "name": "Joe Schmoe",
+                    },
+                    "factory": null,
+                    "backgroundchecks": null
+                  }
+        delete:
+          description: delete from all datasources by name.
