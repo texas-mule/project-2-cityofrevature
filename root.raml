@@ -661,42 +661,42 @@ baseUri: http://police.revature.com
         responses:
           200:
             body:
-              application/json:
+              application/Woodriff:
                 example: |
                   {
-                  "workerid":"P1",
-                  "workerusername":"djson",
-                  "fanme":"Dan",
-                  "lname":"Json",
-                  "email":"djson@gmail.com",
-                  "position":"Police Officer",
+                  "workerid":"A1",
+                  "workerusername":"CWoodriff",
+                  "fanme":"Carl",
+                  "lname":"Woodriff",
+                  "email":"CWoodriff@gmail.com",
+                  "position":"Factory Manager",
                   "password":"password",
                   "employment":"employed",
-                  "pnumber":1234567890,
-                  "ssn":123456789,
-                  "age":24
+                  "pnumber":0987654321,
+                  "ssn":0987654321,
+                  "age":32
                   }
       post:
         body:
-          application/json:
+          application/Woodriff:
             example: |
               {
-              "workerid":"P1",
-              "workerusername":"djson",
-              "fanme":"Dan",
-              "lname":"Json",
-              "email":"djson@gmail.com",
-              "position":"Police Officer",
-              "password":"password",
-              "employment":"employed",
-              "pnumber":1234567890,
-              "ssn":123456789,
-              "age":24
+               "workerid":"A1",
+               "workerusername":"CWoodriff",
+               "fanme":"Carl",
+               "lname":"Woodriff",
+               "email":"CWoodriff@gmail.com",
+               "position":"Factory Manager",
+               "password":"password",
+               "employment":"employed",
+               "pnumber":0987654321,
+               "ssn":0987654321,
+               "age":32
               }
         responses:
           201:
             body:
-              application/json:
+              application/Woodriff:
                 example: |
                   {
                   "message": "Worker inserted"
@@ -706,19 +706,20 @@ baseUri: http://police.revature.com
           responses:
             200:
               body:
-                application/json:
+                application/Woodriff:
                   example: |
                     {
-                    "workerusername":"djson",
-                    "fanme":"Dan",
-                    "lname":"Json",
-                    "email":"djson@gmail.com",
-                    "position":"Police Officer",
-                    "password":"password",
-                    "employment":"employed",
-                    "pnumber":1234567890,
-                    "ssn":123456789,
-                    "age":24
+                  "workerid":"A1",
+                  "workerusername":"CWoodriff",
+                  "fanme":"Carl",
+                  "lname":"Woodriff",
+                  "email":"CWoodriff@gmail.com",
+                  "position":"Factory Manager",
+                  "password":"password",
+                  "employment":"employed",
+                  "pnumber":0987654321,
+                  "ssn":0987654321,
+                  "age":32
                     }
         delete:
           description: This method will delete an entry given their id
