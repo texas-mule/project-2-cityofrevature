@@ -1,18 +1,20 @@
 package cityofrevature;
 
-import java.util.List;
-import java.util.Map;
-
+import org.codehaus.jackson.JsonNode;
 import org.mule.api.MuleEventContext;
 import org.mule.api.lifecycle.Callable;
+import org.mule.module.json.JsonData;
 
 public class HospitalHelper implements Callable {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object onCall(MuleEventContext eventContext) throws Exception {
-		return ((List<Map<String, Object>>) eventContext.getMessage().getPayload()).stream()
-				.filter(m -> m.get("id") == eventContext.getMessage().getInvocationProperty("id")).toArray()[0];
+		JsonNode[] jna = ((JsonData) eventContext.getMessage().getPayload()).toArray();
+		String id = eventContext.getMessage().getInvocationProperty("id");
+		for (JsonNode jn : jna)
+			if (jn.get("id").getTextValue().equals(id))
+				return jn;
+		return null;
 	}
 
 }

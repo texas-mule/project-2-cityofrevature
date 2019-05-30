@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
 	<http:listener-config name="root-httpListenerConfig"
 		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
 	<apikit:config name="root-config" raml="root.raml"
@@ -22,7 +23,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		port="80" basePath="/" doc:name="HTTP_Request_Configuration_police" />
 	<flow name="root-main">
 		<http:listener config-ref="root-httpListenerConfig"
-			path="/api/*" doc:name="HTTP" />
+			path="/*" doc:name="HTTP" />
 		<apikit:router config-ref="root-config" doc:name="APIkit Router" />
 		<exception-strategy ref="root-apiKitGlobalExceptionMapping"
 			doc:name="Reference Exception Strategy" />
@@ -78,7 +79,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<flow name="get:/city/employmentagency/available/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/available/{id}" method="GET" doc:name="HTTP" />
+			path="/available/{id}" method="GET" doc:name="HTTP" >
+            <http:request-builder>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
+            </http:request-builder>
+        </http:request>
 	</flow>
 	<flow name="get:/city/employmentagency/clients:root-config">
 
@@ -88,24 +95,46 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<flow name="get:/city/employmentagency/clients/{name}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}" method="GET" doc:name="HTTP" />
+			path="/clients/{name}" method="GET" doc:name="HTTP" >
+            <http:request-builder>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+            </http:request-builder>
+        </http:request>
 	</flow>
 	<flow name="get:/city/employmentagency/clients/{name}/employees:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/employees" method="GET" doc:name="HTTP" />
+			path="/clients/{name}/employees" method="GET" doc:name="HTTP" >
+            <http:request-builder>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+            </http:request-builder>
+        </http:request>
 	</flow>
 	<flow name="post:/city/employmentagency/clients/apply:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/apply" method="POST" doc:name="HTTP"
-			doc:description="requires parameters: username, password, companyName, phone, email" />
+			doc:description="requires parameters: username, password, companyName, phone, email" >
+            <http:request-builder>
+                <http:query-param paramName="name" value="#[message.inboundProperties.'http.query.params'.name]"/>
+                <http:query-param paramName="phone" value="#[message.inboundProperties.'http.query.params'.phone]"/>
+                <http:query-param paramName="email" value="#[message.inboundProperties.'http.query.params'.email]"/>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+                <http:query-param paramName="companyName" value="#[message.inboundProperties.'http.query.params'.companyName]"/>
+            </http:request-builder>
+        </http:request>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" />
+			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" >
+            <http:request-builder>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
+            </http:request-builder>
+        </http:request>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
@@ -137,7 +166,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Variable" />
 		<http:request config-ref="Hospital_AWS_Request_Configuration"
 			path="/contacts" method="GET" doc:name="HTTP" />
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
 		<component class="cityofrevature.HospitalHelper" doc:name="Java" />
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
 	</flow>
 
 	<flow name="get:/city/police/worker/{id}:root-config">
@@ -162,7 +193,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Variable" />
 		<http:request config-ref="Hospital_AWS_Request_Configuration"
 			path="/contacts" method="GET" doc:name="HTTP" />
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
 		<component class="cityofrevature.HospitalHelper" doc:name="Java" />
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
 	</flow>
 	<flow name="get:/city/integration/person/{name}:root-config">
 		<set-payload
