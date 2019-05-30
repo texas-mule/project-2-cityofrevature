@@ -3,10 +3,11 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-    <http:listener-config name="root-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <apikit:config name="root-config" raml="root.raml" consoleEnabled="false" doc:name="Router"/>
+    <http:listener-config name="root-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" basePath="/city"/>
+    <apikit:config name="root-config" raml="root.raml" consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false"/>
+    <http:request-config name="HTTP_Request_Configuration" host="Employmentagencyapi-env.aq8mftptbr.us-east-2.elasticbeanstalk.com" port="80" basePath="/EmploymentAgencyAPI" doc:name="HTTP Request Configuration"/>
     <flow name="root-main">
-        <http:listener config-ref="root-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <http:listener config-ref="root-httpListenerConfig" path="/" doc:name="HTTP"/>
         <apikit:router config-ref="root-config" doc:name="APIkit Router"/>
         <exception-strategy ref="root-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
     </flow>
@@ -30,19 +31,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
     </flow>
     <flow name="get:/city/employmentagency/available:root-config">
-        <set-payload value="{&#xA;&quot;company&quot; : &quot;Not Assigned&quot;,&#xA;&quot;name&quot; : &quot;Stephen Weinhart&quot;,&#xA;&quot;phone&quot; : &quot;123-456-7890&quot;,&#xA;&quot;skill&quot; : &quot;electrical&quot;&#xA;}" doc:name="Set Payload"/>
+        <http:listener config-ref="root-httpListenerConfig" path="employmentagency/available" allowedMethods="GET" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/available" method="GET" doc:name="HTTP"/>
     </flow>
     <flow name="get:/city/employmentagency/available/{id}:root-config">
-        <set-payload value="{&#xA;&quot;name&quot; : &quot;Stephen Weinhart&quot;,&#xA;&quot;ss&quot; : &quot;123-45-6789&quot;,&#xA;&quot;email&quot; : &quot;steve@test.net&quot;,&#xA;&quot;company&quot; : &quot;Unemployed&quot;,&#xA;&quot;phone&quot; : &quot;123-456-7890&quot;,&#xA;&quot;skill&quot; : &quot;electrical&quot;&#xA;}" doc:name="Set Payload"/>
+        <http:listener config-ref="root-httpListenerConfig" path="employmentagency/available/{id}" allowedMethods="GET" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/available/{id}" method="GET" doc:name="HTTP"/>
     </flow>
     <flow name="get:/city/employmentagency/clients:root-config">
-        <set-payload value="{&#xA;&quot;name&quot; : &quot;Revature Dodge&quot;,&#xA;&quot;phone&quot; : &quot;123-456-7890&quot;,&#xA;&quot;email&quot; : &quot;test@revature.dodge.com&quot;&#xA;}" doc:name="Set Payload"/>
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients" allowedMethods="GET" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients" method="GET" doc:name="HTTP"/>
     </flow>
     <flow name="get:/city/employmentagency/clients/{name}:root-config">
-        <set-payload value="{&#xA;&quot;name&quot; : &quot;Revature Dodge&quot;,&#xA;&quot;phone&quot; : &quot;123-456-7890&quot;,&#xA;&quot;email&quot; : &quot;test@revature.dodge.com&quot;&#xA;}" doc:name="Set Payload"/>
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}" allowedMethods="GET" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}" method="GET" doc:name="HTTP"/>
     </flow>
     <flow name="get:/city/employmentagency/clients/{name}/employees:root-config">
-        <set-payload value="{&#xA;&quot;name&quot; : &quot;Stephen Weinhart&quot;,&#xA;&quot;phone&quot; : &quot;123-456-7890&quot;,&#xA;&quot;email&quot; : &quot;steve@test.net&quot;,&#xA;&quot;skill&quot; : &quot;electrical&quot;&#xA;}" doc:name="Set Payload"/>
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/employees" allowedMethods="GET" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/employees" method="GET" doc:name="HTTP"/>
+    </flow>
+        <flow name="post:/city/employmentagency/clients/apply:root-config">
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/apply" allowedMethods="POST" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients/apply" method="POST" doc:name="HTTP" doc:description="requires parameters: username, password, companyName, phone, email"/>
+    </flow>
+    <flow name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/hire/{id}" allowedMethods="POST" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP"/>
+    </flow>
+    <flow name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
+        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/release/{id}" allowedMethods="POST" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP"/>
     </flow>
     <flow name="get:/city/police/criminal:root-config">
         <set-payload value="{&#xA;&quot;criminalid&quot;:&quot;C1&quot;,&#xA;&quot;name&quot;:&quot;Joe Mitchell&quot;,&#xA;&quot;conviction&quot;:&quot;convicted&quot;&#xA;}" doc:name="Set Payload"/>
@@ -70,15 +88,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </flow>
     <flow name="get:/city/integration/person/{name}:root-config">
         <set-payload value="{&#xA;  &quot;police&quot;:{&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;P1&quot;&#xA;  }&#xA;  &quot;hospital&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;0034P00002SkogHQAR&quot;&#xA;  }&#xA;  &quot;employmentagency&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;  },&#xA;  &quot;factory&quot;: null,&#xA;  &quot;backgroundchecks&quot;: null&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/employmentagency/clients/apply:root-config">
-        <set-payload value="New Client Added" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
-        <set-payload value="Revature has successfully hired Steve Weinhart" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
-        <set-payload value="Revature has successfully released Steve Weinhart" doc:name="Set Payload"/>
     </flow>
     <flow name="post:/city/police/criminal:root-config">
         <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
