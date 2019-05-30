@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
 	<http:listener-config name="root-httpListenerConfig"
 		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
 	<apikit:config name="root-config" raml="root.raml"
@@ -105,13 +107,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" />
+			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" >
+            <http:request-builder>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" />
+			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" >
+            <http:request-builder>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow name="get:/city/police/criminal:root-config">
 
