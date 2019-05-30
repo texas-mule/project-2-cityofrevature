@@ -1,0 +1,95 @@
+#%RAML 1.0
+title: BackgroundCheck
+baseUri: / 
+version: v1
+/city/backgroundcheck:
+  /person:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+      description: Gets the names of all people
+  /person/{name}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+    put:
+      responses:
+        200:
+          body:
+            application/json:
+      description: Adds a new person by name.
+    uriParameters:
+      name:
+        description: Name of person
+        default: John Doe
+        example: John Doe
+        type: string
+        minLength: 2
+        maxLength: 121
+  /education/diploma/{person_name}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+    put:
+      queryParameters:
+        Diploma_type:
+          description: Type of diploma issued.
+          default: BS
+          example: PHD
+          type: string
+          minLength: 2
+          maxLength: 20
+        Diploma_subject:
+          description: Subject the diploma is in.
+          default: Computer Science
+          example: Art
+          type: string
+          minLength: 3
+          maxLength: 100
+      responses:
+        200:
+          body:
+            application/json:
+      description: Add a new diploma to a graduate.
+    uriParameters:
+      person_name:
+        description: Name of diploma holder
+        default: John Doe
+        example: John Doe
+        type: string
+        minLength: 2
+        maxLength: 121
+  /criminal/conviction/{person_name}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+    put:
+      queryParameters:
+        offense_name:
+          description: Name of offense
+          default: Petty theft
+          example: Auto theft
+          type: string
+          minLength: 4
+          maxLength: 100
+      responses:
+        200:
+          body:
+            application/json:
+      description: Adds a new criminal record to a convict.
+    uriParameters:
+      person_name:
+        description: Name of convict
+        default: John Doe
+        example: John Doe
+        type: string
+        minLength: 2
+        maxLength: 121
