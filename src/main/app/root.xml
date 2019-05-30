@@ -1,139 +1,254 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-    <http:listener-config name="root-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" basePath="/city"/>
-    <apikit:config name="root-config" raml="root.raml" consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false"/>
-    <http:request-config name="HTTP_Request_Configuration" host="Employmentagencyapi-env.aq8mftptbr.us-east-2.elasticbeanstalk.com" port="80" basePath="/EmploymentAgencyAPI" doc:name="HTTP Request Configuration"/>
-    <flow name="root-main">
-        <http:listener config-ref="root-httpListenerConfig" path="/" doc:name="HTTP"/>
-        <apikit:router config-ref="root-config" doc:name="APIkit Router"/>
-        <exception-strategy ref="root-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
-    </flow>
-    <flow name="root-console">
-        <http:listener config-ref="root-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
-        <apikit:console config-ref="root-config" doc:name="APIkit Console"/>
-    </flow>
-    <flow name="delete:/city/hospital/worker/{id}:root-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="delete:/city/hospital/patient/{id}:root-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="delete:/city/police/criminal/{id}:root-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="delete:/city/police/worker/{id}:root-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="delete:/city/integration/person/{name}:root-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/employmentagency/available:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="employmentagency/available" allowedMethods="GET" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/available" method="GET" doc:name="HTTP"/>
-    </flow>
-    <flow name="get:/city/employmentagency/available/{id}:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="employmentagency/available/{id}" allowedMethods="GET" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/available/{id}" method="GET" doc:name="HTTP"/>
-    </flow>
-    <flow name="get:/city/employmentagency/clients:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients" allowedMethods="GET" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients" method="GET" doc:name="HTTP"/>
-    </flow>
-    <flow name="get:/city/employmentagency/clients/{name}:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}" allowedMethods="GET" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}" method="GET" doc:name="HTTP"/>
-    </flow>
-    <flow name="get:/city/employmentagency/clients/{name}/employees:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/employees" allowedMethods="GET" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/employees" method="GET" doc:name="HTTP"/>
-    </flow>
-        <flow name="post:/city/employmentagency/clients/apply:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/apply" allowedMethods="POST" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients/apply" method="POST" doc:name="HTTP" doc:description="requires parameters: username, password, companyName, phone, email"/>
-    </flow>
-    <flow name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/hire/{id}" allowedMethods="POST" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP"/>
-    </flow>
-    <flow name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
-        <http:listener config-ref="root-httpListenerConfig" path="/employmentagency/clients/{name}/release/{id}" allowedMethods="POST" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP"/>
-    </flow>
-    <flow name="get:/city/police/criminal:root-config">
-        <set-payload value="{&#xA;&quot;criminalid&quot;:&quot;C1&quot;,&#xA;&quot;name&quot;:&quot;Joe Mitchell&quot;,&#xA;&quot;conviction&quot;:&quot;convicted&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/hospital/patient:root-config">
-        <set-payload value="[&#xA;    {&#xA;        &quot;id&quot;: &quot;0034P00002SkogHQAR&quot;,&#xA;        &quot;first&quot;: &quot;Mort&quot;,&#xA;        &quot;last&quot;: &quot;Deadman&quot;,&#xA;        &quot;email&quot;: &quot;cancerpatient@thedead.com&quot;,&#xA;        &quot;phone&quot;: &quot;(777) 123 - 8977&quot;,&#xA;        &quot;birthdate&quot;: &quot;1994-11-08T00:00:00.000+0000&quot;,&#xA;        &quot;accountid&quot;: &quot;0014P000025vEztQAE&quot;&#xA;    },&#xA;    {&#xA;        &quot;id&quot;: &quot;0034P00002SkogMQAR&quot;,&#xA;        &quot;first&quot;: &quot;Zed&quot;,&#xA;        &quot;last&quot;: &quot;PimplePopper&quot;,&#xA;        &quot;email&quot;: &quot;hypochondriac@short.com&quot;,&#xA;        &quot;phone&quot;: &quot;(811) 456 - 7771&quot;,&#xA;        &quot;birthdate&quot;: &quot;1998-11-08T00:00:00.000+0000&quot;,&#xA;        &quot;accountid&quot;: &quot;0014P000025vEztQAE&quot;&#xA;    }&#xA;]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/hospital/worker:root-config">
-        <set-payload value="[&#xA;    {&#xA;        &quot;id&quot;: &quot;0034P00002Skoe1QAB&quot;,&#xA;        &quot;first&quot;: &quot;Robin&quot;,&#xA;        &quot;last&quot;: &quot;James&quot;,&#xA;        &quot;email&quot;: &quot;jerk@uncoolpeople.com&quot;,&#xA;        &quot;phone&quot;: &quot;(385) 888 - 9000&quot;,&#xA;        &quot;birthdate&quot;: &quot;1990-01-19T00:00:00.000+0000&quot;,&#xA;        &quot;accountid&quot;: &quot;0014P000025vEy2QAE&quot;&#xA;    },&#xA;    {&#xA;        &quot;id&quot;: &quot;0034P00002SlTRdQAN&quot;,&#xA;        &quot;first&quot;: &quot;Doug&quot;,&#xA;        &quot;last&quot;: &quot;Krabbe&quot;,&#xA;        &quot;email&quot;: &quot;somebody@earthlink.com&quot;,&#xA;        &quot;phone&quot;: &quot;(100) 744 - 1234&quot;,&#xA;        &quot;birthdate&quot;: &quot;1997-12-05T00:00:00.000+0000&quot;,&#xA;        &quot;accountid&quot;: &quot;0014P000025vEy2QAE&quot;&#xA;    }&#xA;]" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/police/worker:root-config">
-        <set-payload value="{&#xA;&quot;workerid&quot;:&quot;P1&quot;,&#xA;&quot;workerusername&quot;:&quot;djson&quot;,&#xA;&quot;name&quot;:&quot;Dan Json&quot;,&#xA;&quot;email&quot;:&quot;djson@gmail.com&quot;,&#xA;&quot;position&quot;:&quot;Police Officer&quot;,&#xA;&quot;password&quot;:&quot;password&quot;,&#xA;&quot;employment&quot;:&quot;employed&quot;,&#xA;&quot;pnumber&quot;:1234567890,&#xA;&quot;ssn&quot;:123456789,&#xA;&quot;age&quot;:24&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/hospital/worker/{id}:root-config">
-        <set-payload value="{&#xA;    &quot;id&quot;: &quot;0034P00002SlTRdQAN&quot;,&#xA;    &quot;first&quot;: &quot;Doug&quot;,&#xA;    &quot;last&quot;: &quot;Krabbe&quot;,&#xA;    &quot;email&quot;: &quot;somebody@earthlink.com&quot;,&#xA;    &quot;phone&quot;: &quot;(100) 744 - 1234&quot;,&#xA;    &quot;birthdate&quot;: &quot;1997-12-05T00:00:00.000+0000&quot;,&#xA;    &quot;accountid&quot;: &quot;0014P000025vEy2QAE&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/police/worker/{id}:root-config">
-        <set-payload value="{&#xA;&quot;workerusername&quot;:&quot;djson&quot;,&#xA;&quot;name&quot;:&quot;Dan Json&quot;,&#xA;&quot;email&quot;:&quot;djson@gmail.com&quot;,&#xA;&quot;position&quot;:&quot;Police Officer&quot;,&#xA;&quot;password&quot;:&quot;password&quot;,&#xA;&quot;employment&quot;:&quot;employed&quot;,&#xA;&quot;pnumber&quot;:1234567890,&#xA;&quot;ssn&quot;:123456789,&#xA;&quot;age&quot;:24&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/police/criminal/{id}:root-config">
-        <set-payload value="{&#xA;&quot;name&quot;:&quot;Joe Mitchell&quot;,&#xA;&quot;conviction&quot;:&quot;released&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/hospital/patient/{id}:root-config">
-        <set-payload value="{&#xA;    &quot;id&quot;: &quot;0034P00002SkogMQAR&quot;,&#xA;    &quot;first&quot;: &quot;Zed&quot;,&#xA;    &quot;last&quot;: &quot;PimplePopper&quot;,&#xA;    &quot;email&quot;: &quot;hypochondriac@short.com&quot;,&#xA;    &quot;phone&quot;: &quot;(811) 456 - 7771&quot;,&#xA;    &quot;birthdate&quot;: &quot;1998-11-08T00:00:00.000+0000&quot;,&#xA;    &quot;accountid&quot;: &quot;0014P000025vEztQAE&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="get:/city/integration/person/{name}:root-config">
-        <set-payload value="{&#xA;  &quot;police&quot;:{&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;P1&quot;&#xA;  }&#xA;  &quot;hospital&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;0034P00002SkogHQAR&quot;&#xA;  }&#xA;  &quot;employmentagency&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;  },&#xA;  &quot;factory&quot;: null,&#xA;  &quot;backgroundchecks&quot;: null&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/police/criminal:root-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;&quot;message&quot;: &quot;Criminal inserted&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/hospital/patient:root-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;  &quot;id&quot;: &quot;0034P00002SkojfQAB&quot;,&#xA;  &quot;first&quot;: &quot;Johnny&quot;,&#xA;  &quot;last&quot;: &quot;Tongue-in-Socket&quot;,&#xA;  &quot;email&quot;: &quot;electrocution@wallsocket.com&quot;,&#xA;  &quot;phone&quot;: &quot;(765) 122 - 4733&quot;,&#xA;  &quot;birthdate&quot;: &quot;1994-08-29T00:00:00.000+0000&quot;,&#xA;  &quot;accountid&quot;: &quot;0014P000025vEztQAE&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/integration/person:root-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/police/worker:root-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;&quot;message&quot;: &quot;Worker inserted&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <flow name="post:/city/hospital/worker:root-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;    &quot;id&quot;: &quot;0034P00002SlTRdQAN&quot;,&#xA;    &quot;first&quot;: &quot;Doug&quot;,&#xA;    &quot;last&quot;: &quot;Krabbe&quot;,&#xA;    &quot;email&quot;: &quot;somebody@earthlink.com&quot;,&#xA;    &quot;phone&quot;: &quot;(100) 744 - 1234&quot;,&#xA;    &quot;birthdate&quot;: &quot;1997-12-05T00:00:00.000+0000&quot;,&#xA;    &quot;accountid&quot;: &quot;0014P000025vEy2QAE&quot;&#xA;}" doc:name="Set Payload"/>
-    </flow>
-    <apikit:mapping-exception-strategy name="root-apiKitGlobalExceptionMapping">
-        <apikit:mapping statusCode="404">
-            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
-        </apikit:mapping>
-        <apikit:mapping statusCode="405">
-            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
-        </apikit:mapping>
-        <apikit:mapping statusCode="415">
-            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
-        </apikit:mapping>
-        <apikit:mapping statusCode="406">
-            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
-        </apikit:mapping>
-        <apikit:mapping statusCode="400">
-            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
-        </apikit:mapping>
-    </apikit:mapping-exception-strategy>
+	<http:listener-config name="root-httpListenerConfig"
+		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
+	<apikit:config name="root-config" raml="root.raml"
+		consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false" />
+	<http:request-config name="Employment_Agency_AWS_Request_Configuration"
+		host="Employmentagencyapi-env.aq8mftptbr.us-east-2.elasticbeanstalk.com"
+		port="80" basePath="/EmploymentAgencyAPI" doc:name="Employment_Agency_AWS_Request_Configuration" />
+	<http:request-config name="Hospital_AWS_Request_Configuration"
+		host="hospital-env.4cka8cwsmb.us-east-2.elasticbeanstalk.com" port="80"
+		basePath="/" doc:name="Hospital_AWS_Request_Configuration" />
+	<http:request-config name="HTTP_Request_Configuration_police"
+		host="springpolice-env.4nmduqansj.us-east-2.elasticbeanstalk.com"
+		port="80" basePath="/" doc:name="HTTP_Request_Configuration_police" />
+	<flow name="root-main">
+		<http:listener config-ref="root-httpListenerConfig"
+			path="/api/*" doc:name="HTTP" />
+		<apikit:router config-ref="root-config" doc:name="APIkit Router" />
+		<exception-strategy ref="root-apiKitGlobalExceptionMapping"
+			doc:name="Reference Exception Strategy" />
+	</flow>
+	<flow name="root-console">
+		<http:listener config-ref="root-httpListenerConfig"
+			path="/console/*" doc:name="HTTP" />
+		<apikit:console config-ref="root-config" doc:name="APIkit Console" />
+	</flow>
+	<flow name="delete:/city/hospital/worker/{id}:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts/{id}" method="DELETE" doc:name="HTTP">
+			<http:request-builder>
+				<http:uri-param paramName="id"
+					value="#[message.inboundProperties.'http.uri.params'.id]" />
+			</http:request-builder>
+		</http:request>
+	</flow>
+	<flow name="delete:/city/hospital/patient/{id}:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="contacts/{id}" method="DELETE" doc:name="HTTP">
+			<http:request-builder>
+				<http:uri-param paramName="id" value="#[flowVars.id]" />
+			</http:request-builder>
+		</http:request>
+	</flow>
+	<flow name="delete:/city/police/criminal/{id}:root-config">
+
+		<set-payload value="#[NullPayload.getInstance()]"
+			doc:name="Set Payload" />
+		<set-session-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Session Variable" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals/delete/#[sessionVars.id]" method="DELETE" doc:name="HTTP" />
+	</flow>
+	<flow name="delete:/city/police/worker/{id}:root-config">
+
+		<set-payload value="#[NullPayload.getInstance()]"
+			doc:name="Set Payload" />
+		<set-session-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Session Variable" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/workers/delete/#[sessionVars.id]" method="DELETE" doc:name="HTTP" />
+	</flow>
+	<flow name="delete:/city/integration/person/{name}:root-config">
+		<set-payload value="#[NullPayload.getInstance()]"
+			doc:name="Set Payload" />
+	</flow>
+	<flow name="get:/city/employmentagency/available:root-config">
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/available" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/employmentagency/available/{id}:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/available/{id}" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/employmentagency/clients:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/employmentagency/clients/{name}:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients/{name}" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/employmentagency/clients/{name}/employees:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients/{name}/employees" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="post:/city/employmentagency/clients/apply:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients/apply" method="POST" doc:name="HTTP"
+			doc:description="requires parameters: username, password, companyName, phone, email" />
+	</flow>
+	<flow
+		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" />
+	</flow>
+	<flow
+		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
+
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/police/criminal:root-config">
+
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/hospital/patient:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts/patients" method="GET" doc:name="HTTP" />
+	</flow>
+
+	<flow name="get:/city/hospital/worker:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts/workers" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/police/worker:root-config">
+
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/workers" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/hospital/worker/{id}:root-config">
+		<set-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Variable" />
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts" method="GET" doc:name="HTTP" />
+		<component class="cityofrevature.HospitalHelper" doc:name="Java" />
+	</flow>
+
+	<flow name="get:/city/police/worker/{id}:root-config">
+
+		<set-payload value="#[NullPayload.getInstance()]"
+			doc:name="Set Payload" />
+		<set-session-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Session Variable" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="workers/get/#[sessionVars.id]" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/police/criminal/{id}:root-config">
+		<set-payload value="#[NullPayload.getInstance()]"
+			doc:name="Set Payload" />
+		<set-session-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Session Variable" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="criminals/get/#[sessionVars.id]" method="GET" doc:name="HTTP" />
+	</flow>
+	<flow name="get:/city/hospital/patient/{id}:root-config">
+		<set-variable variableName="id"
+			value="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Variable" />
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts" method="GET" doc:name="HTTP" />
+		<component class="cityofrevature.HospitalHelper" doc:name="Java" />
+	</flow>
+	<flow name="get:/city/integration/person/{name}:root-config">
+		<set-payload
+			value="{&#xA;  &quot;police&quot;:{&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;P1&quot;&#xA;  }&#xA;  &quot;hospital&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;0034P00002SkogHQAR&quot;&#xA;  }&#xA;  &quot;employmentagency&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;  },&#xA;  &quot;factory&quot;: null,&#xA;  &quot;backgroundchecks&quot;: null&#xA;}"
+			doc:name="Set Payload" />
+	</flow>
+	<flow name="post:/city/police/criminal:root-config">
+		<set-property propertyName="Content-Type" value="application/json"
+			doc:name="Property" />
+		<object-to-string-transformer
+			returnClass="java.lang.String" doc:name="Object to String" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals/post" method="POST" doc:name="HTTP" />
+		<set-payload
+			value="{&#xA;&quot;message&quot;: &quot;Criminal inserted&quot;&#xA;}"
+			doc:name="Set Payload" />
+	</flow>
+	<flow name="post:/city/hospital/patient:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts" method="POST" doc:name="HTTP" />
+	</flow>
+	<flow name="post:/city/integration/person:root-config">
+		<set-property propertyName="Content-Type" value="application/json"
+			doc:name="Property" />
+		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
+			doc:name="Set Payload" />
+	</flow>
+	<flow name="post:/city/police/worker:root-config">
+		<set-property propertyName="Content-Type" value="application/json"
+			doc:name="Property" />
+		<object-to-string-transformer
+			returnClass="java.lang.String" doc:name="Object to String" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/workers/post" method="POST" doc:name="HTTP" />
+		<set-payload
+			value="{&#xA;&quot;message&quot;: &quot;Worker inserted&quot;&#xA;}"
+			doc:name="Set Payload" />
+	</flow>
+	<flow name="post:/city/hospital/worker:root-config">
+		<http:request config-ref="Hospital_AWS_Request_Configuration"
+			path="/contacts" method="POST" doc:name="HTTP" />
+	</flow>
+	<apikit:mapping-exception-strategy
+		name="root-apiKitGlobalExceptionMapping">
+		<apikit:mapping statusCode="404">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.NotFoundException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{ &quot;message&quot;: &quot;Resource not found&quot; }"
+				doc:name="Set Payload" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="405">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{ &quot;message&quot;: &quot;Method not allowed&quot; }"
+				doc:name="Set Payload" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="415">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }"
+				doc:name="Set Payload" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="406">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.NotAcceptableException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }"
+				doc:name="Set Payload" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="400">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.BadRequestException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }"
+				doc:name="Set Payload" />
+		</apikit:mapping>
+	</apikit:mapping-exception-strategy>
 </mule>

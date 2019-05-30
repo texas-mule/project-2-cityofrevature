@@ -1,0 +1,11 @@
+{
+    "inputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "HospitalAllContacts"
+        }
+    },
+    "outputMessageMetadata": {},
+    "id": "5af23e0c-0305-4ca7-8048-c2a0fc58d33e",
+    "version": "5.2.0.0"
+}
