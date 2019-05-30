@@ -124,6 +124,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                 <http:query-param paramName="companyName" value="#[message.inboundProperties.'http.query.params'.companyName]"/>
             </http:request-builder>
         </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
@@ -131,16 +132,27 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" >
             <http:request-builder>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
                 <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
                 <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
             </http:request-builder>
         </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" />
+			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" >
+            <http:request-builder>
+                <http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+                <http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow name="get:/city/police/criminal:root-config">
 
@@ -159,7 +171,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 	<flow name="get:/city/police/worker:root-config">
 
 		<http:request config-ref="HTTP_Request_Configuration_police"
-			path="/workers" method="GET" doc:name="HTTP" />
+			path="/worker" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/hospital/worker/{id}:root-config">
 		<set-variable variableName="id"
