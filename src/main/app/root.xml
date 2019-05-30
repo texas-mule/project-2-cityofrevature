@@ -50,8 +50,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</http:request>
 	</flow>
 	<flow name="delete:/city/police/criminal/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/criminals/delete/{id}" doc:name="HTTP" />
+
 		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
 		<set-session-variable variableName="id"
@@ -60,8 +59,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			path="/criminals/delete/#[sessionVars.id]" method="DELETE" doc:name="HTTP" />
 	</flow>
 	<flow name="delete:/city/police/worker/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/workers/delete/{id}" doc:name="HTTP" />
+
 		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
 		<set-session-variable variableName="id"
@@ -74,64 +72,49 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			doc:name="Set Payload" />
 	</flow>
 	<flow name="get:/city/employmentagency/available:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="employmentagency/available" allowedMethods="GET" doc:name="HTTP" />
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/available" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/employmentagency/available/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="employmentagency/available/{id}" allowedMethods="GET" doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/available/{id}" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/employmentagency/clients:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients" allowedMethods="GET" doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/employmentagency/clients/{name}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients/{name}" allowedMethods="GET"
-			doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/employmentagency/clients/{name}/employees:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients/{name}/employees" allowedMethods="GET"
-			doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/employees" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="post:/city/employmentagency/clients/apply:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients/apply" allowedMethods="POST"
-			doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/apply" method="POST" doc:name="HTTP"
 			doc:description="requires parameters: username, password, companyName, phone, email" />
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients/{name}/hire/{id}" allowedMethods="POST"
-			doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" />
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/employmentagency/clients/{name}/release/{id}" allowedMethods="POST"
-			doc:name="HTTP" />
+
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/police/criminal:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/criminals" doc:name="HTTP" />
+
 		<http:request config-ref="HTTP_Request_Configuration_police"
 			path="/criminals" method="GET" doc:name="HTTP" />
 	</flow>
@@ -145,8 +128,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			path="/contacts/workers" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/police/worker:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/workers" doc:name="HTTP" />
+
 		<http:request config-ref="HTTP_Request_Configuration_police"
 			path="/workers" method="GET" doc:name="HTTP" />
 	</flow>
@@ -159,8 +141,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</flow>
 
 	<flow name="get:/city/police/worker/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/workers/{id}" doc:name="HTTP" />
+
 		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
 		<set-session-variable variableName="id"
@@ -169,8 +150,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			path="workers/get/#[sessionVars.id]" method="GET" doc:name="HTTP" />
 	</flow>
 	<flow name="get:/city/police/criminal/{id}:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/workers/{id}" doc:name="HTTP" />
 		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
 		<set-session-variable variableName="id"
@@ -191,8 +170,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			doc:name="Set Payload" />
 	</flow>
 	<flow name="post:/city/police/criminal:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/criminals/post" doc:name="HTTP" />
 		<set-property propertyName="Content-Type" value="application/json"
 			doc:name="Property" />
 		<object-to-string-transformer
@@ -214,8 +191,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			doc:name="Set Payload" />
 	</flow>
 	<flow name="post:/city/police/worker:root-config">
-		<http:listener config-ref="root-httpListenerConfig"
-			path="/workers/post" doc:name="HTTP" />
 		<set-property propertyName="Content-Type" value="application/json"
 			doc:name="Property" />
 		<object-to-string-transformer
