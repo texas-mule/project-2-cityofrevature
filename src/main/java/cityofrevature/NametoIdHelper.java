@@ -17,7 +17,6 @@ public class NametoIdHelper implements Callable {
 		JsonNode[] jna = ((JsonData) eventContext.getMessage().getPayload()).toArray();
 
 		String name = eventContext.getMessage().getProperty("fullname", PropertyScope.SESSION);
-		String id;
 		for (JsonNode jn : jna) {
 			System.out.println(jn);
 			System.out.println(jn.get("name"));
