@@ -1,6 +1,5 @@
 package cityofrevature;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,8 @@ public class SalesforceHelper implements Callable {
 
 	@Override
 	public Object onCall(MuleEventContext eventContext) throws Exception {
-		ConsumerIterator ci = (ConsumerIterator) eventContext.getMessage().getPayload();
+		@SuppressWarnings("unchecked")
+		ConsumerIterator<Map<String,Object>> ci = (ConsumerIterator<Map<String,Object>>) eventContext.getMessage().getPayload();
 		List<Map<String, Object>>listofhashmaps = new LinkedList<Map<String, Object>>();
 		while (ci.hasNext()){
 			listofhashmaps.add((Map<String,Object>)ci.next());

@@ -9,6 +9,7 @@ import org.mule.api.lifecycle.Callable;
 
 public class IdHelper implements Callable {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> onCall(MuleEventContext eventContext) throws Exception {
 
