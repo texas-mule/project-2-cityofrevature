@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<http:listener-config name="root-httpListenerConfig"
 		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
 	<apikit:config name="root-config" raml="root.raml"
@@ -21,9 +23,16 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 	<http:request-config name="HTTP_Request_Configuration_police"
 		host="springpolice-env.4nmduqansj.us-east-2.elasticbeanstalk.com"
 		port="80" basePath="/" doc:name="HTTP_Request_Configuration_police" />
+	<sfdc:config name="Salesforce__Basic_Authentication_josh"
+		username="dwatson1995@gmail.com" password="Doe4Deer" securityToken="vH1CqM5dpz2y9Hd6SuK7eIPF"
+		doc:name="Salesforce: Basic Authentication" url="https://login.salesforce.com/services/Soap/u/41.0" />
+	<sfdc:config name="Salesforce__Basic_Authentication_john"
+		username="silver_rapter@yahoo.com" password="Dawnwar0"
+		securityToken="imebO7ODJTv7Hq3Qh9KhbN6gK" url="https://login.salesforce.com/services/Soap/u/41.0"
+		doc:name="Salesforce: Basic Authentication" />
 	<flow name="root-main">
 		<http:listener config-ref="root-httpListenerConfig"
-			path="/*" doc:name="HTTP" />
+			path="/api/*" doc:name="HTTP" />
 		<apikit:router config-ref="root-config" doc:name="APIkit Router" />
 		<exception-strategy ref="root-apiKitGlobalExceptionMapping"
 			doc:name="Reference Exception Strategy" />
@@ -68,9 +77,98 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		<http:request config-ref="HTTP_Request_Configuration_police"
 			path="/workers/delete/#[sessionVars.id]" method="DELETE" doc:name="HTTP" />
 	</flow>
+	<flow name="rootSub_Flow_delete_criminal">
+        <logger message="rootSub_Flow_delete_criminal" level="INFO" doc:name="Logger"/>
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals" method="GET" doc:name="HTTP" />
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+		<json:json-to-object-transformer
+			doc:name="JSON to Object" />
+        <logger message="#[sessionVars.fullname]" level="INFO" doc:name="Logger"/>
+		<component class="cityofrevature.NametoIdHelper" doc:name="Java" />
+		<set-session-variable variableName="id" value="#[payload]"
+			doc:name="Session Variable" />
+        <logger message="#[sessionVars.id]" level="INFO" doc:name="Logger"/>
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals/delete/{id}" method="DELETE" doc:name="HTTP" >
+            <http:request-builder>
+                <http:uri-param paramName="id" value="#[sessionVars.id]"/>
+            </http:request-builder>
+        </http:request>
+		<catch-exception-strategy doc:name="Catch Exception Strategy">
+			<set-payload value="#[{}]" mimeType="application/json"
+				doc:name="Set Payload" />
+			<flow-ref name="rootSub_Flow_delete_police_worker" doc:name="Flow Reference" />
+			<flow-ref name="rootSub_Flow_delete_factory_contact"
+				doc:name="Flow Reference" />
+		</catch-exception-strategy>
+	</flow>
+	<flow name="rootSub_Flow_delete_police_worker">
+        <logger message="rootSub_Flow_delete_police_worker" level="INFO" doc:name="Logger"/>
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/workers" method="GET" doc:name="HTTP" />
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+		<json:json-to-object-transformer
+			doc:name="JSON to Object" />
+        <logger message="#[sessionVars.fullname]" level="INFO" doc:name="Logger"/>
+		<component class="cityofrevature.NametoIdHelper" doc:name="Java" />
+		<set-session-variable variableName="id" value="#[payload]"
+			doc:name="Session Variable" />
+        <logger message="#[sessionVars.id]" level="INFO" doc:name="Logger"/>
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/workers/delete/{id}" method="DELETE" doc:name="HTTP" >
+            <http:request-builder>
+                <http:uri-param paramName="id" value="#[sessionVars.id]"/>
+            </http:request-builder>
+        </http:request>
+		<catch-exception-strategy doc:name="Catch Exception Strategy">
+			<set-payload value="#[{}]" mimeType="application/json"
+				doc:name="Set Payload" />
+			<flow-ref name="rootSub_Flow_delete_factory_contact"
+				doc:name="Flow Reference" />
+		</catch-exception-strategy>
+	</flow>
+	<flow name="rootSub_Flow_delete_factory_contact">
+		<sfdc:query config-ref="Salesforce__Basic_Authentication_john"
+			query="dsql:SELECT Id FROM Contact WHERE FirstName = '#[sessionVars.first]' AND LastName = '#[sessionVars.last]'"
+			doc:name="Salesforce" />
+		<component class="cityofrevature.SalesforceHelper" doc:name="Java" />
+		<component class="cityofrevature.IdHelper" doc:name="Java" />
+		<sfdc:delete config-ref="Salesforce__Basic_Authentication_john"
+			doc:name="Salesforce">
+			<sfdc:ids ref="#[payload]" />
+		</sfdc:delete>
+	</flow>
 	<flow name="delete:/city/integration/person/{name}:root-config">
 		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
+		<set-variable variableName="name"
+			value="#[message.inboundProperties.'http.uri.params'.name]" doc:name="Variable" />
+		<component class="cityofrevature.SessionVarSplitHelper"
+			doc:name="Java" />
+		<sfdc:query config-ref="Salesforce__Basic_Authentication_josh"
+			query="dsql:SELECT Id FROM Contact WHERE FirstName = '#[sessionVars.first]' AND LastName = '#[sessionVars.last]'"
+			doc:name="Salesforce" />
+		<component class="cityofrevature.SalesforceHelper" doc:name="Java" />
+		<component class="cityofrevature.IdHelper" doc:name="Java" />
+		<sfdc:delete config-ref="Salesforce__Basic_Authentication_josh"
+			doc:name="Salesforce">
+			<sfdc:ids ref="#[payload]" />
+		</sfdc:delete>
+		<set-payload value="#[{}]" mimeType="application/json"
+			doc:name="Set Payload" />
+		<flow-ref name="rootSub_Flow_delete_criminal" doc:name="Flow Reference" />
+		<flow-ref name="rootSub_Flow_delete_police_worker" doc:name="Flow Reference" />
+		<flow-ref name="rootSub_Flow_delete_factory_contact"
+			doc:name="Flow Reference" />
+		<catch-exception-strategy doc:name="Catch Exception Strategy">
+			<set-payload value="#[{}]" mimeType="application/json"
+				doc:name="Set Payload" />
+			<flow-ref name="rootSub_Flow_delete_criminal" doc:name="Flow Reference" />
+			<flow-ref name="rootSub_Flow_delete_police_worker" doc:name="Flow Reference" />
+			<flow-ref name="rootSub_Flow_delete_factory_contact"
+				doc:name="Flow Reference" />
+		</catch-exception-strategy>
 	</flow>
 	<flow name="get:/city/employmentagency/available:root-config">
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
@@ -129,18 +227,37 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP" >
-            <http:request-builder>
-                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
-                <http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
-            </http:request-builder>
-        </http:request>
+			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP">
+			<http:request-builder>
+				<http:query-param paramName="username"
+					value="#[message.inboundProperties.'http.query.params'.username]" />
+				<http:query-param paramName="password"
+					value="#[message.inboundProperties.'http.query.params'.password]" />
+				<http:uri-param paramName="name"
+					value="#[message.inboundProperties.'http.uri.params'.name]" />
+				<http:uri-param paramName="id"
+					value="#[message.inboundProperties.'http.uri.params'.id]" />
+			</http:request-builder>
+		</http:request>
+		<object-to-string-transformer doc:name="Object to String" />
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
 
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
-			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP" />
+			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP">
+			<http:request-builder>
+				<http:query-param paramName="username"
+					value="#[message.inboundProperties.'http.query.params'.username]" />
+				<http:query-param paramName="password"
+					value="#[message.inboundProperties.'http.query.params'.password]" />
+				<http:uri-param paramName="name"
+					value="#[message.inboundProperties.'http.uri.params'.name]" />
+				<http:uri-param paramName="id"
+					value="#[message.inboundProperties.'http.uri.params'.id]" />
+			</http:request-builder>
+		</http:request>
+		<object-to-string-transformer doc:name="Object to String" />
 	</flow>
 	<flow name="get:/city/police/criminal:root-config">
 
@@ -197,10 +314,64 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		<component class="cityofrevature.HospitalHelper" doc:name="Java" />
         <json:object-to-json-transformer doc:name="Object to JSON"/>
 	</flow>
+	<sub-flow name="rootSub_Flow_employment_available">
+		<flow-ref name="get:/city/employmentagency/available:root-config"
+			doc:name="Flow Reference" />
+		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
+			path="/available" method="GET" doc:name="HTTP" />
+		<json:json-to-object-transformer
+			doc:name="JSON to Object" />
+		<component class="cityofrevature.NameHelper" doc:name="Java" />
+		<json:object-to-json-transformer
+			doc:name="Object to JSON" />
+	</sub-flow>
+	<sub-flow name="rootSub_Flow_police_criminal">
+		<flow-ref name="get:/city/police/criminal:root-config"
+			doc:name="Flow Reference" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals" method="GET" doc:name="HTTP" />
+		<json:json-to-object-transformer
+			doc:name="JSON to Object" />
+		<component class="cityofrevature.NameHelper" doc:name="Java" />
+		<json:object-to-json-transformer
+			doc:name="Object to JSON" />
+	</sub-flow>
+	<sub-flow name="rootSub_Flow_police_worker">
+		<flow-ref name="get:/city/police/worker:root-config"
+			doc:name="Flow Reference" />
+		<http:request config-ref="HTTP_Request_Configuration_police"
+			path="/criminals" method="GET" doc:name="HTTP" />
+		<json:json-to-object-transformer
+			doc:name="JSON to Object" />
+		<component class="cityofrevature.NameHelper" doc:name="Java" />
+		<json:object-to-json-transformer
+			doc:name="Object to JSON" />
+	</sub-flow>
+	<sub-flow name="rootSub_Flow_car">
+		<sfdc:query config-ref="Salesforce__Basic_Authentication_john"
+			query="dsql:SELECT Id, FirstName, LastName FROM Contact WHERE FirstName = '#[sessionVars.first]' AND LastName = '#[sessionVars.last]'"
+			doc:name="Salesforce" />
+		<component class="cityofrevature.SalesforceHelper" doc:name="Copy_of_Java" />
+	</sub-flow>
 	<flow name="get:/city/integration/person/{name}:root-config">
-		<set-payload
-			value="{&#xA;  &quot;police&quot;:{&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;P1&quot;&#xA;  }&#xA;  &quot;hospital&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;    &quot;id&quot;: &quot;0034P00002SkogHQAR&quot;&#xA;  }&#xA;  &quot;employmentagency&quot;: {&#xA;    &quot;name&quot;: &quot;Joe Schmoe&quot;,&#xA;  },&#xA;  &quot;factory&quot;: null,&#xA;  &quot;backgroundchecks&quot;: null&#xA;}"
+		<set-payload value="#[NullPayload.getInstance()]"
 			doc:name="Set Payload" />
+		<set-variable variableName="name"
+			value="#[message.inboundProperties.'http.uri.params'.name]" doc:name="Variable" />
+		<component class="cityofrevature.SessionVarSplitHelper"
+			doc:name="Java" />
+		<logger message="#[sessionVars.first], #[sessionVars.last]"
+			level="INFO" doc:name="Logger" />
+		<sfdc:query config-ref="Salesforce__Basic_Authentication_josh"
+			query="dsql:SELECT Id, FirstName, LastName FROM Contact WHERE FirstName = '#[sessionVars.first]' AND LastName = '#[sessionVars.last]'"
+			doc:name="Salesforce" />
+		<component class="cityofrevature.SalesforceHelper" doc:name="Java" />
+		<flow-ref name="rootSub_Flow_car" doc:name="Flow Reference" />
+		<flow-ref name="rootSub_Flow_police_worker" doc:name="Flow Reference" />
+		<flow-ref name="rootSub_Flow_police_criminal" doc:name="Flow Reference" />
+		<flow-ref name="rootSub_Flow_employment_available" doc:name="Flow Reference" />
+		<json:object-to-json-transformer
+			doc:name="Object to JSON" />
 	</flow>
 	<flow name="post:/city/police/criminal:root-config">
 		<set-property propertyName="Content-Type" value="application/json"
@@ -220,6 +391,10 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 	<flow name="post:/city/integration/person:root-config">
 		<set-property propertyName="Content-Type" value="application/json"
 			doc:name="Property" />
+		<sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh"
+			externalIdFieldName="email" type="Contact" doc:name="Salesforce">
+			<sfdc:objects ref="#[payload]" />
+		</sfdc:upsert>
 		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
 			doc:name="Set Payload" />
 	</flow>
