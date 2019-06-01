@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
-	xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -15,7 +14,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 	<apikit:config name="root-config" raml="root.raml"
 		consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false" />
 	<http:request-config name="Employment_Agency_AWS_Request_Configuration"
-		host="Employmentagencyapi-env.aq8mftptbr.us-east-2.elasticbeanstalk.com"
+		host="Employmentagencyapi-env-1.aq8mftptbr.us-east-2.elasticbeanstalk.com"
 		port="80" basePath="/EmploymentAgencyAPI" doc:name="Employment_Agency_AWS_Request_Configuration" />
 	<http:request-config name="Hospital_AWS_Request_Configuration"
 		host="hospital-env.4cka8cwsmb.us-east-2.elasticbeanstalk.com" port="80"
@@ -30,9 +29,10 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		username="silver_rapter@yahoo.com" password="Dawnwar0"
 		securityToken="imebO7ODJTv7Hq3Qh9KhbN6gK" url="https://login.salesforce.com/services/Soap/u/41.0"
 		doc:name="Salesforce: Basic Authentication" />
+	<http:request-config name="HTTP_Request_Configuration" host="cityofrevaturebackgroundcheck.us-e2.cloudhub.io" port="80" basePath="/api/city/backgroundcheck/person" doc:name="HTTP Request Configuration"/>
 	<flow name="root-main">
 		<http:listener config-ref="root-httpListenerConfig"
-			path="/api/*" doc:name="HTTP" />
+			path="/*" doc:name="HTTP" />
 		<apikit:router config-ref="root-config" doc:name="APIkit Router" />
 		<exception-strategy ref="root-apiKitGlobalExceptionMapping"
 			doc:name="Reference Exception Strategy" />
@@ -222,6 +222,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
                 <http:query-param paramName="companyName" value="#[message.inboundProperties.'http.query.params'.companyName]"/>
             </http:request-builder>
         </http:request>
+		<object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/hire/{id}:root-config">
@@ -229,17 +230,13 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/hire/{id}" method="POST" doc:name="HTTP">
 			<http:request-builder>
-				<http:query-param paramName="username"
-					value="#[message.inboundProperties.'http.query.params'.username]" />
-				<http:query-param paramName="password"
-					value="#[message.inboundProperties.'http.query.params'.password]" />
-				<http:uri-param paramName="name"
-					value="#[message.inboundProperties.'http.uri.params'.name]" />
-				<http:uri-param paramName="id"
-					value="#[message.inboundProperties.'http.uri.params'.id]" />
+				<http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+				<http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+				<http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+				<http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
 			</http:request-builder>
 		</http:request>
-		<object-to-string-transformer doc:name="Object to String" />
+		<object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow
 		name="post:/city/employmentagency/clients/{name}/release/{id}:root-config">
@@ -247,17 +244,13 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		<http:request config-ref="Employment_Agency_AWS_Request_Configuration"
 			path="/clients/{name}/release/{id}" method="POST" doc:name="HTTP">
 			<http:request-builder>
-				<http:query-param paramName="username"
-					value="#[message.inboundProperties.'http.query.params'.username]" />
-				<http:query-param paramName="password"
-					value="#[message.inboundProperties.'http.query.params'.password]" />
-				<http:uri-param paramName="name"
-					value="#[message.inboundProperties.'http.uri.params'.name]" />
-				<http:uri-param paramName="id"
-					value="#[message.inboundProperties.'http.uri.params'.id]" />
+				<http:query-param paramName="username" value="#[message.inboundProperties.'http.query.params'.username]"/>
+				<http:query-param paramName="password" value="#[message.inboundProperties.'http.query.params'.password]"/>
+				<http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+				<http:uri-param paramName="id" value="#[message.inboundProperties.'http.uri.params'.id]"/>
 			</http:request-builder>
 		</http:request>
-		<object-to-string-transformer doc:name="Object to String" />
+		<object-to-string-transformer doc:name="Object to String"/>
 	</flow>
 	<flow name="get:/city/police/criminal:root-config">
 
@@ -391,10 +384,9 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 	<flow name="post:/city/integration/person:root-config">
 		<set-property propertyName="Content-Type" value="application/json"
 			doc:name="Property" />
-		<sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh"
-			externalIdFieldName="email" type="Contact" doc:name="Salesforce">
-			<sfdc:objects ref="#[payload]" />
-		</sfdc:upsert>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <component class="cityofrevature.SalesforceContactHelper" doc:name="Java"/>
+        <sfdc:no-operation-selected config-ref="" doc:name="Salesforce"/>
 		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
 			doc:name="Set Payload" />
 	</flow>
@@ -413,6 +405,38 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		<http:request config-ref="Hospital_AWS_Request_Configuration"
 			path="/contacts" method="POST" doc:name="HTTP" />
 	</flow>
+	<flow name="backgroundCheck:Get/city/integration/background/{name}">
+        <http:listener config-ref="root-httpListenerConfig" path="/city/integration/background/{name}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="name" value="#[message.inboundProperties.'http.uri.params'.name]" doc:name="name"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/{name}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="name" value="#[message.inboundProperties.'http.uri.params'.name]"/>
+            </http:request-builder>
+        </http:request>
+        <component class="cityofrevature.BackgroundHelper" doc:name="Java"/>
+        <logger message="#[sessionVars.diplomas], #[sessionVars.offenses]" level="INFO" doc:name="Logger"/>
+        <response>
+            <json:object-to-json-transformer doc:name="Object to JSON"/>
+        </response>
+
+
+        <http:request config-ref="Employment_Agency_AWS_Request_Configuration" path="/{name}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:query-param paramName="username" value="admin"/>
+                <http:query-param paramName="password" value="admin"/>
+                <http:uri-param paramName="name" value="#[flowVars.name]"/>
+            </http:request-builder>
+        </http:request>
+        <response>
+            <expression-transformer mimeType="application/x-compressed" expression="#[['name' : flowVars.name, 'phone' : flowVars.phone, 'email' : flowVars.email, 'skills' : flowVars.skills, 'ss' : flowVars.ss, 'client' : flowVars.client, 'diplomas' : sessionVars.diplomas, 'offenses' : sessionVars.offenses]]" doc:name="Expression"/>
+        </response>
+
+        <set-variable variableName="phone" value="#[json://phone]" doc:name="phone"/>
+        <set-variable variableName="email" value="#[json://email]" doc:name="email"/>
+        <set-variable variableName="skills" value="#[json://skills]" doc:name="skills"/>
+        <set-variable variableName="ss" value="#[json://ss]" doc:name="ss"/>
+        <set-variable variableName="client" value="#[json://client]" doc:name="client"/>
+    </flow>
 	<apikit:mapping-exception-strategy
 		name="root-apiKitGlobalExceptionMapping">
 		<apikit:mapping statusCode="404">
