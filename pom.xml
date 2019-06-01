@@ -180,6 +180,11 @@
 			<artifactId>force-wsc</artifactId>
 			<version>45.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.revature</groupId>
+			<artifactId>hospitalenterprisewsdl</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

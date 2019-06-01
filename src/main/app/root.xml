@@ -386,7 +386,10 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 			doc:name="Property" />
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <component class="cityofrevature.SalesforceContactHelper" doc:name="Java"/>
-        <sfdc:no-operation-selected config-ref="" doc:name="Salesforce"/>
+        <sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh" externalIdFieldName="Email" type="Contact" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:upsert>
+
 		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
 			doc:name="Set Payload" />
 	</flow>
@@ -420,6 +423,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         </response>
 
 
+
         <http:request config-ref="Employment_Agency_AWS_Request_Configuration" path="/{name}" method="GET" doc:name="HTTP">
             <http:request-builder>
                 <http:query-param paramName="username" value="admin"/>
@@ -430,6 +434,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <response>
             <expression-transformer mimeType="application/x-compressed" expression="#[['name' : flowVars.name, 'phone' : flowVars.phone, 'email' : flowVars.email, 'skills' : flowVars.skills, 'ss' : flowVars.ss, 'client' : flowVars.client, 'diplomas' : sessionVars.diplomas, 'offenses' : sessionVars.offenses]]" doc:name="Expression"/>
         </response>
+
 
         <set-variable variableName="phone" value="#[json://phone]" doc:name="phone"/>
         <set-variable variableName="email" value="#[json://email]" doc:name="email"/>
