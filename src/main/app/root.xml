@@ -386,9 +386,11 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 			doc:name="Property" />
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <component class="cityofrevature.SalesforceContactHelper" doc:name="Java"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh" externalIdFieldName="Email" type="Contact" doc:name="Salesforce">
             <sfdc:objects ref="#[payload]"/>
         </sfdc:upsert>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
 
 		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
 			doc:name="Set Payload" />
