@@ -381,16 +381,46 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		<http:request config-ref="Hospital_AWS_Request_Configuration"
 			path="/contacts" method="POST" doc:name="HTTP" />
 	</flow>
-	<flow name="post:/city/integration/person:root-config">
-		<set-property propertyName="Content-Type" value="application/json"
-			doc:name="Property" />
+    <sub-flow name="rootSub_Flow_post_car">
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-        <component class="cityofrevature.SalesforceContactHelper" doc:name="Java"/>
+        <set-payload value="#[sessionVars.input]" mimeType="application/json" doc:name="Set Payload"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <component class="cityofrevature.SalesforceNewContactHelper" doc:name="Java"/>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh" externalIdFieldName="Email" type="Contact" doc:name="Salesforce">
             <sfdc:objects ref="#[payload]"/>
         </sfdc:upsert>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="rootSub_Flow_post_criminal">
+        <set-session-variable variableName="criminalid" value="#[function:uuid]" doc:name="criminalid"/>
+        <expression-transformer mimeType="application/x-compressed" expression="#[['criminalid':sessionVars.criminalid, 'name' : sessionVars.name]]" doc:name="Expression"/>
+        <logger message="[#[payload]]" level="INFO" doc:name="Logger"/>
+        <json:object-to-json-transformer doc:name="Object to JSON" mimeType="application/json"/>
+        <logger message="[#[message.payloadAs(java.lang.String)]]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_police" path="/criminals/post" method="POST" doc:name="HTTP"/>
+    </sub-flow>
+	<flow name="post:/city/integration/person:root-config">
+		<set-property propertyName="Content-Type" value="application/json"
+			doc:name="Property" />
+        <set-session-variable variableName="email" value="#[json://email]" doc:name="email"/>
+        <logger message="#[sessionVars.email]" level="INFO" doc:name="Logger"/>
+        <set-session-variable variableName="first" value="#[json://first] " doc:name="first"/>
+        <logger message="#[sessionVars.first]" level="INFO" doc:name="Logger"/>
+        <set-session-variable variableName="last" value="#[json://last]" doc:name="last"/>
+        <logger message="#[sessionVars.last]" level="INFO" doc:name="Logger"/>
+        <set-session-variable variableName="name" value="#[json://first] #[json://last]" doc:name="name"/>
+        <logger message="#[sessionVars.name]" level="INFO" doc:name="Logger"/>
+        <set-session-variable variableName="input" value="#[payload]" mimeType="application/json" doc:name="Session Variable"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <component class="cityofrevature.SalesforceNewContactHelper" doc:name="Java"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <sfdc:upsert config-ref="Salesforce__Basic_Authentication_josh" externalIdFieldName="Email" type="Contact" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:upsert>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <flow-ref name="rootSub_Flow_post_car" doc:name="Flow Reference"/>
+        <flow-ref name="rootSub_Flow_post_criminal" doc:name="Flow Reference"/>
 
 		<set-payload value="{&#xA;  &quot;message&quot;:&quot;inserted&quot;&#xA;}"
 			doc:name="Set Payload" />
@@ -434,7 +464,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
             </http:request-builder>
         </http:request>
         <response>
-            <expression-transformer mimeType="application/x-compressed" expression="#[['name' : flowVars.name, 'phone' : flowVars.phone, 'email' : flowVars.email, 'skills' : flowVars.skills, 'ss' : flowVars.ss, 'client' : flowVars.client, 'diplomas' : sessionVars.diplomas, 'offenses' : sessionVars.offenses]]" doc:name="Expression"/>
+            <expression-transformer mimeType="application/json" expression="#[['name' : flowVars.name, 'phone' : flowVars.phone, 'email' : flowVars.email, 'skills' : flowVars.skills, 'ss' : flowVars.ss, 'client' : flowVars.client, 'diplomas' : sessionVars.diplomas, 'offenses' : sessionVars.offenses]]" doc:name="Expression"/>
         </response>
 
 
